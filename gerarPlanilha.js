@@ -24,7 +24,6 @@ async function generateSpreadsheet() {
 
         await client.connect();
 
-        // Load the query from the external file
         const queryFilePath = path.join(__dirname, 'query.sql');
         const query = fs.readFileSync(queryFilePath, 'utf8');
 
