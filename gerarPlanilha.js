@@ -32,7 +32,7 @@ async function generateSpreadsheet() {
         const result = await client.query(query, values);
 
         if (!result.rows || result.rows.length === 0) {
-            console.log('No data found for the specified date range.');
+            console.log('Sem dados para o periodo especificado.');
             return;
         }
 
@@ -95,7 +95,7 @@ async function uploadToGoogleDrive(filePath, fileName) {
                 }
             });
         } else {
-            throw new Error('File upload failed. No file ID returned.');
+            throw new Error('Falha no upload do arquivo. ID não retornado.');
         }
     } catch (err) {
         console.error('Falha ao upar arquivo no Drive:', err);
