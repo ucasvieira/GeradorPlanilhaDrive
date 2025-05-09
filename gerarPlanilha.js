@@ -4,6 +4,8 @@ const { Workbook } = require('exceljs');
 const { google } = require('googleapis');
 const fs = require('fs');
 const path = require('path');
+const prompt = require('prompt-sync')({ sigint: true });
+
 
 async function generateSpreadsheet() {
     const client = new Client({
@@ -17,12 +19,20 @@ async function generateSpreadsheet() {
     try {
         const now = new Date();
         const oneMonthAgo = new Date();
-        oneMonthAgo.setMonth(now.getMonth() - 1);
-
+        const monthsToSubtract = prompt('Quantos meses deseja subtrair? (1-12): ');
+        if (isNaN(monthsToSubtract) || monthsToSubtract < 1 || monthsToSubtract > 12) {
+            oneMonthAgo.setMonth(now.getMonth() - monthsToSubtract);
+        }
+        else {
+            console.log('Valor inválido. Usando 1 mês como padrão.');
+            oneMonthAgo.setMonth(now.getMonth() - 1);
+        }
         const startDate = oneMonthAgo.toISOString().split('T')[0];
         const endDate = now.toISOString().split('T')[0];
-
-        await client.connect();
+        try {
+            await client.connect();
+        } catch (err) { console.error('Erro ao conectar ao banco de dados:', err); return; }
+        console.log(`Conectado ao banco de dados. Realizando consulta de ${startDate} a ${endDate}`);
 
         const queryFilePath = path.join(__dirname, 'query.sql');
         const query = fs.readFileSync(queryFilePath, 'utf8');

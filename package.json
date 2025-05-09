@@ -4,6 +4,7 @@
     "exceljs": "^4.4.0",
     "googleapis": "^148.0.0",
     "pg": "^8.15.6",
+    "prompt-sync": "^4.2.0",
     "sanitize-filename": "^1.6.3"
   }
 }
