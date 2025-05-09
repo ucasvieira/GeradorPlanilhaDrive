@@ -21,10 +21,14 @@ async function generateSpreadsheet() {
 
         const startDate = oneMonthAgo.toISOString().split('T')[0];
         const endDate = now.toISOString().split('T')[0];
-
-        await client.connect();
-
-        // Load the query from the external file
+        
+        try {
+            await client.connect();
+        } catch (err) {
+            console.error('Erro ao conectar ao banco de dados:', err);
+            return;
+        }
+        console.log(`Conectado ao banco de dados ${process.env.DB_DATABASE} com sucesso.`);
         const queryFilePath = path.join(__dirname, 'query.sql');
         const query = fs.readFileSync(queryFilePath, 'utf8');
 
@@ -32,7 +36,7 @@ async function generateSpreadsheet() {
         const result = await client.query(query, values);
 
         if (!result.rows || result.rows.length === 0) {
-            console.log('No data found for the specified date range.');
+            console.log('Sem dados para o periodo especificado.');
             return;
         }
 
