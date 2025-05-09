@@ -29,7 +29,7 @@ async function generateSpreadsheet() {
             return;
         }
         console.log(`Conectado ao banco de dados ${process.env.DB_DATABASE} com sucesso.`);
-        const queryFilePath = path.join(__dirname, 'query.sql');
+        const queryFilePath = path.join(__dirname, process.env.QUERY_FILE);
         const query = fs.readFileSync(queryFilePath, 'utf8');
 
         const values = [startDate, endDate];
@@ -99,7 +99,7 @@ async function uploadToGoogleDrive(filePath, fileName) {
                 }
             });
         } else {
-            throw new Error('File upload failed. No file ID returned.');
+            throw new Error('Falha ao upar arquivo no Drive. Nenhum ID retornado.');
         }
     } catch (err) {
         console.error('Falha ao upar arquivo no Drive:', err);
